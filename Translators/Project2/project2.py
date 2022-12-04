@@ -1,7 +1,10 @@
 from builtins import len, SystemExit, print, exit, KeyError
 from io import open
 
-f = open('test.txt', 'r')
+f = open('code_examples/error102.txt', 'r')
+# f = open('code_examples/error101.txt', 'r')
+# f = open('code_examples/normal.txt', 'r')
+
 sourceCode = f.read()
 f.close()
 
@@ -9,36 +12,57 @@ sourceCode += ' '
 
 FSuccess = (True, 'Lexer')
 
-tableOfLanguageTokens = {'start': 'keyword', 'end': 'keyword', 'read': 'keyword', 'print': 'keyword',
-                         'for': 'keyword', 'by': 'keyword', 'while': 'keyword', 'do': 'keyword', 'if': 'keyword',
-                         '=': 'assign_op',
-                         '.': 'dot',
-                         '-': 'add_op', '+': 'add_op',
-                         '*': 'mult_op', '/': 'mult_op',
-                         '^': 'nelt_op',
-                         '<': 'rel_op', '<=': 'rel_op', '>=': 'rel_op', '>': 'rel_op', '==': 'rel_op', '!=': 'rel_op',
-                         '(': 'brackets_op', ')': 'brackets_op', '{': 'brackets_op', '}': 'brackets_op',
-                         ',': 'punct', ';': 'punct',
-                         ' ': 'ws', '\t': 'ws', '\n': 'nl'}
-tableIdentFloatInt = {2: 'ident', 7: 'real', 8: 'integer'}
+tableOfLanguageTokens = {
+    'start': 'keyword',
+    'end': 'keyword',
+    'read': 'keyword',
+    'print': 'keyword',
+    'for': 'keyword',
+    'by': 'keyword',
+    'while': 'keyword',
+    'do': 'keyword',
+    'if': 'keyword',
+    '=': 'assign_op',
+    '.': 'dot',
+    '-': 'add_op',
+    '+': 'add_op',
+    '*': 'mult_op',
+    '/': 'mult_op',
+    '^': 'nelt_op',
+    '<': 'rel_op',
+    '<=': 'rel_op',
+    '>=': 'rel_op',
+    '>': 'rel_op',
+    '==': 'rel_op',
+    '!=': 'rel_op',
+    '(': 'brackets_op',
+    ')': 'brackets_op',
+    '{': 'brackets_op',
+    '}': 'brackets_op',
+    ',': 'punct',
+    ';': 'punct',
+    ' ': 'ws', '\t': 'ws', '\n': 'nl'
+}
+
+tableIdentFloatInt = {2: 'ident', 5: 'real', 6: 'integer'}
 
 # δ - state-transition_function
 # клас ws - для пробiльних символiв, клас nl - для символу нового рядка, клас other - для символiв, що не належать до поточної лексеми.
 stf = {
     (0, 'ws'): 0,
-    (0, 'nl'): 9,
-    (0, 'AddOp'): 10, (0, 'MultOp'): 10, (0, '^'): 10, (0, ','): 10, (0, ';'): 10, (0, 'Brackets'): 10,
-    (0, 'Letter'): 1, (0, 'E'): 1, (1, 'Letter'): 1, (1, 'E'): 1, (1, 'Digit'): 1, (1, 'other'): 2,
-    (0, 'Digit'): 3, (3, 'Digit'): 3, (3, 'E'): 5, (3, 'other'): 8, (3, 'dot'): 4, (4, 'Digit'): 4, (4, 'other'): 7,
-    (4, 'E'): 5, (5, 'AddOp'): 6, (5, 'Digit'): 6, (6, 'Digit'): 6, (6, 'other'): 7,
-    (0, '='): 13,
-    (0, '!'): 12, (0, '<'): 14, (0, '>'): 14, (12, '='): 15, (14, '='): 15, (13, '='): 15,
-    (0, 'other'): 101, (12, 'other'): 102
+    (0, 'nl'): 7,
+    (0, 'other'): 101,
+    (0, 'AddOp'): 8, (0, 'MultOp'): 8, (0, '^'): 8, (0, ','): 8, (0, ';'): 8, (0, 'Brackets'): 8,
+    (0, 'Letter'): 1, (1, 'Letter'): 1, (1, 'Digit'): 1, (1, 'other'): 2,
+    (0, 'Digit'): 3, (3, 'Digit'): 3, (3, 'other'): 6, (3, 'dot'): 4, (4, 'Digit'): 4, (4, 'other'): 5,
+    (0, '='): 10,
+    (0, '!'): 9, (0, '<'): 11, (0, '>'): 11, (9, '='): 12, (11, '='): 12, (10, '='): 12,
+    (9, 'other'): 102
 }
 
 initState = 0  # q0 - стартовий стан
-F = {2, 7, 8, 9, 10, 14, 15, 13, 101, 102}
-Fstar = {2, 7, 8}  # зірочка
+F = {2, 5, 6, 7, 8, 11, 12, 10, 101, 102}
+Fstar = {2, 5, 6, 7, 8, 12}  # зірочка
 Ferror = {101, 102}  # обробка помилок
 
 state = initState  # поточний стан
@@ -102,11 +126,10 @@ def tableToPrint(table):
 
 def processing():
     global state, lexeme, numLine, numChar
-    if state in (2, 7, 8):
+    if state in (2, 5, 6):
         token = getToken(state, lexeme)
         if token != 'keyword':
             index = indexIdConst(state, lexeme, token)
-            print('-------------------------------------------------------------------------------------------\n\n\n\n')
             print('{0:<3d} {1:<10s} {2:<10s} {3:<2d} '.format(numLine, lexeme, token, index))
             tableOfSymb[len(tableOfSymb) + 1] = (numLine, lexeme, token, index)
         else:  # якщо keyword
@@ -115,22 +138,11 @@ def processing():
         lexeme = ''
         numChar = putCharBack(numChar)
         state = initState
-    if state == 9:
+    if state == 7:
+        print('-----------------------------------------------')
         numLine += 1
         state = initState
-    if state == 14:
-        lexeme += char
-        if nextChar() == '=':
-            classCh = classOfChar('=')
-            state = nextState(state, classCh)
-        else:
-            numChar -= 1
-            token = getToken(state, lexeme)
-            print('{0:<3d} {1:<10s} {2:<10s} '.format(numLine, lexeme, token))
-            tableOfSymb[len(tableOfSymb) + 1] = (numLine, lexeme, token, '')
-            lexeme = ''
-            state = initState
-    if state == 13:
+    if state == 11:
         lexeme += char
         if nextChar() == '=':
             classCh = classOfChar('=')
@@ -144,12 +156,24 @@ def processing():
             state = initState
     if state == 10:
         lexeme += char
+        if nextChar() == '=':
+            classCh = classOfChar('=')
+            state = nextState(state, classCh)
+        else:
+            numChar -= 1
+            token = getToken(state, lexeme)
+            print('{0:<3d} {1:<10s} {2:<10s} '.format(numLine, lexeme, token))
+            tableOfSymb[len(tableOfSymb) + 1] = (numLine, lexeme, token, '')
+            lexeme = ''
+            state = initState
+    if state == 8:
+        lexeme += char
         token = getToken(state, lexeme)
         print('{0:<3d} {1:<10s} {2:<10s} '.format(numLine, lexeme, token))
         tableOfSymb[len(tableOfSymb) + 1] = (numLine, lexeme, token, '')
         lexeme = ''
         state = initState
-    if state == 15:
+    if state == 12:
         lexeme += '='
         token = getToken(state, lexeme)
         print('{0:<3d} {1:<10s} {2:<10s} '.format(numLine, lexeme, token))
@@ -163,8 +187,7 @@ def processing():
 
 def fail():
     if state == 101:
-        print('\nLexer ERROR:\n\t[{0}]: Неочікуваний символ \'{1}\'.'
-              .format(numLine, char))
+        print('\nLexer ERROR:\n\t[{0}]: Неочікуваний символ \'{1}\'.'.format(numLine, char))
         exit(101)
     if state == 102:
         print('\nLexer ERROR:\n\t[{0}]: Неочікуваний символ \'{1}\'.'
@@ -228,10 +251,7 @@ def nextState(state, classCh):
 
 
 def is_final(state):
-    if state in F:
-        return True
-    else:
-        return False
+    return state in F
 
 
 def getToken(state, lexeme):
@@ -249,13 +269,13 @@ def indexIdConst(state, lexeme, token):
         if index1 is None:
             index = len(tableOfVar) + 1
             tableOfVar[lexeme] = (index, 'type_undef', 'val_undef')
-    elif state in (7, 8):  # real, integer
+    elif state in (5, 6):  # real, integer
         if index1 is None:
             index = len(tableOfConst) + 1
-            if state == 7:
+            if state == 5:
                 val = float(lexeme)
                 tableOfConst[lexeme] = (index, token, val)
-            elif state == 8:
+            elif state == 6:
                 val = int(lexeme)
                 tableOfConst[lexeme] = (index, token, val)
     if not (index1 is None):
@@ -268,45 +288,36 @@ def indexIdConst(state, lexeme, token):
 
 def tableOfSymbolsToPrint():
     print("\n Таблиця символів")
-    s1 = '{0:<10s} {1:<10s} {2:<10s} {3:<10s} {4:<5s} '
-    s2 = '{0:<10d} {1:<10d} {2:<10s} {3:<10s} {4:<5s} '
-    print(s1.format("numRec", "numLine", "lexeme", "token", "index"))
+    print('{0:<10s} {1:<10s} {2:<10s} {3:<10s} {4:<5s} '.format("numRec", "numLine", "lexeme", "token", "index"))
     for numRec in tableOfSymb:
         numLine, lexeme, token, index = tableOfSymb[numRec]
-        print(s2.format(numRec, numLine, lexeme, token, str(index)))
+        print('{0:<10d} {1:<10d} {2:<10s} {3:<10s} {4:<5s} '.format(numRec, numLine, lexeme, token, str(index)))
 
 
 def tableOfIdToPrint():
     print("\n Таблиця ідентифікаторів")
-    s1 = '{0:<10s} {1:<15s} {2:<15s} {3:<10s} '
-    print(s1.format("Ident", "Type", "Value", "Index"))
-    s2 = '{0:<10s} {2:<15s} {3:<15s} {1:<10d} '
+    print('{0:<10s} {1:<15s} {2:<15s} {3:<10s} '.format("Ident", "Type", "Value", "Index"))
     for id in tableOfVar:
         index, type, val = tableOfVar[id]
-        print(s2.format(id, index, type, str(val)))
+        print('{0:<10s} {2:<15s} {3:<15s} {1:<10d} '.format(id, index, type, str(val)))
 
 
 def tableOfConstToPrint():
     print("\n Таблиця констант")
-    s1 = '{0:<10s} {1:<10s} {2:<10s} {3:<10s} '
-    print(s1.format("Const", "Type", "Value", "Index"))
-    s2 = '{0:<10s} {2:<10s} {3:<10} {1:<10d} '
+    print('{0:<10s} {1:<10s} {2:<10s} {3:<10s} '.format("Const", "Type", "Value", "Index"))
     for const in tableOfConst:
         index, type, val = tableOfConst[const]
-        print(s2.format(str(const), index, type, val))
+        print('{0:<10s} {2:<10s} {3:<10} {1:<10d} '.format(str(const), index, type, val))
 
 
 def tableOfLabelToPrint():
     if len(tableOfLabel) == 0:
         print("\n Таблиця міток - порожня")
     else:
-        s1 = '{0:<10s} {1:<10s} '
         print("\n Таблиця міток")
-        print(s1.format("Label", "Value"))
-        s2 = '{0:<10s} {1:<10d} '
+        print('{0:<10s} {1:<10s} '.format("Label", "Value"))
         for lbl in tableOfLabel:
-            val = tableOfLabel[lbl]
-            print(s2.format(lbl, val))
+            print('{0:<10s} {1:<10d} '.format(lbl, tableOfLabel[lbl]))
 
 
 lex()

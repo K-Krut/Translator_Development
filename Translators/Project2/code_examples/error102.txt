@@ -1,0 +1,8 @@
+start ProgramName
+    for ( I = 1 ) by ( I = I + 1) while (I < 10) do {
+        if ( I !: 4) {
+            print(i);
+        }
+    }
+end
+

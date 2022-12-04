@@ -1,0 +1,5 @@
+start ProgramName
+    k = $54
+    d = 3.0 ^ (5.0 / 10.0);
+end
+

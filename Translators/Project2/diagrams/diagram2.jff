@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--Created with JFLAP 7.1.--><structure>
+	<type>fa</type>
+	<automaton>
+		<!--The list of states.-->
+		<state id="0" name="2">
+			<x>635.0</x>
+			<y>150.0</y>
+			<label>*</label>
+			<final/>
+		</state>
+		<state id="1" name="0">
+			<x>366.0</x>
+			<y>238.0</y>
+			<initial/>
+		</state>
+		<state id="2" name="1">
+			<x>481.0</x>
+			<y>158.0</y>
+		</state>
+		<state id="3" name="3">
+			<x>475.0</x>
+			<y>327.0</y>
+		</state>
+		<state id="4" name="4">
+			<x>592.0</x>
+			<y>382.0</y>
+		</state>
+		<state id="5" name="5">
+			<x>725.0</x>
+			<y>388.0</y>
+			<label>*</label>
+			<final/>
+		</state>
+		<state id="6" name="6">
+			<x>503.0</x>
+			<y>475.0</y>
+			<label>*</label>
+			<final/>
+		</state>
+		<state id="7" name="7">
+			<x>291.0</x>
+			<y>74.0</y>
+			<label>*</label>
+			<final/>
+		</state>
+		<state id="8" name="8">
+			<x>64.0</x>
+			<y>277.0</y>
+			<label>*</label>
+			<final/>
+		</state>
+		<state id="9" name="9">
+			<x>211.0</x>
+			<y>378.0</y>
+		</state>
+		<state id="10" name="101">
+			<x>112.0</x>
+			<y>150.0</y>
+			<label>ERROR</label>
+			<final/>
+		</state>
+		<state id="11" name="10">
+			<x>286.0</x>
+			<y>444.0</y>
+			<final/>
+		</state>
+		<state id="13" name="102">
+			<x>72.0</x>
+			<y>415.0</y>
+			<label>ERROR</label>
+			<final/>
+		</state>
+		<state id="14" name="12">
+			<x>251.0</x>
+			<y>546.0</y>
+			<label>*</label>
+			<final/>
+		</state>
+		<state id="15" name="11">
+			<x>382.0</x>
+			<y>461.0</y>
+			<final/>
+		</state>
+		<!--The list of transitions.-->
+		<transition>
+			<from>1</from>
+			<to>11</to>
+			<read>=</read>
+		</transition>
+		<transition>
+			<from>3</from>
+			<to>3</to>
+			<read>Digit</read>
+		</transition>
+		<transition>
+			<from>4</from>
+			<to>4</to>
+			<read>Digit</read>
+		</transition>
+		<transition>
+			<from>1</from>
+			<to>9</to>
+			<read>!</read>
+		</transition>
+		<transition>
+			<from>1</from>
+			<to>10</to>
+			<read>other</read>
+		</transition>
+		<transition>
+			<from>2</from>
+			<to>0</to>
+			<read>other</read>
+		</transition>
+		<transition>
+			<from>15</from>
+			<to>14</to>
+			<read>=</read>
+		</transition>
+		<transition>
+			<from>9</from>
+			<to>14</to>
+			<read>=</read>
+		</transition>
+		<transition>
+			<from>1</from>
+			<to>7</to>
+			<read>nl</read>
+		</transition>
+		<transition>
+			<from>1</from>
+			<to>8</to>
+			<read>( ) { } * / ^ + -</read>
+		</transition>
+		<transition>
+			<from>1</from>
+			<to>2</to>
+			<read>Letter</read>
+		</transition>
+		<transition>
+			<from>3</from>
+			<to>4</to>
+			<read>dot</read>
+		</transition>
+		<transition>
+			<from>1</from>
+			<to>3</to>
+			<read>Digit</read>
+		</transition>
+		<transition>
+			<from>11</from>
+			<to>14</to>
+			<read>=</read>
+		</transition>
+		<transition>
+			<from>4</from>
+			<to>5</to>
+			<read>other</read>
+		</transition>
+		<transition>
+			<from>3</from>
+			<to>6</to>
+			<read>other</read>
+		</transition>
+		<transition>
+			<from>2</from>
+			<to>2</to>
+			<read>Letter Digit</read>
+		</transition>
+		<transition>
+			<from>1</from>
+			<to>15</to>
+			<read>&gt;&lt;</read>
+		</transition>
+		<transition>
+			<from>9</from>
+			<to>13</to>
+			<read>other</read>
+		</transition>
+	</automaton>
+</structure>

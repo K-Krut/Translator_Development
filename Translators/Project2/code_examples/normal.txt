@@ -1,0 +1,15 @@
+start ProgramName
+    k = 54
+    d = 3.0 ^ (5.0 / 10.0);
+
+    for ( I = 1 ) by ( I = I + 1) while (I < 10) do {
+        print(i);
+    }
+
+    I = 1;
+
+    If ( I < 10 ) {
+        print (i);
+    }
+end
+
