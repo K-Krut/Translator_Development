@@ -1,0 +1,7 @@
+start ProgramName
+    d = 3;
+    k = 10;
+    if(d - k } d + k) {
+        print(d);
+    }
+end

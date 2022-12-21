@@ -1,0 +1,4 @@
+start ProgramName
+    k = 1
+    print (k);
+end

@@ -1,4 +1,3 @@
 start ProgramName
-    print(c);
+    = 1.0
 end
-

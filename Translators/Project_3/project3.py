@@ -1,7 +1,6 @@
 from project2 import lex
 from project2 import tableOfSymb
 
-
 lex()
 print('\n')
 
@@ -9,10 +8,10 @@ numRow = 1
 
 len_tableOfSymb = len(tableOfSymb)
 
-
 postfixCode = []
 viewTranslation = True
 viewSyntax = True
+
 
 def parseProgram():
     print('\n' + '=' * 60 + '\n')
@@ -27,6 +26,7 @@ def parseProgram():
     except SystemExit as e:
         print('\nParser: Аварійне завершення програми з кодом {0}'.format(e))
         exit()
+
 
 def parseToken(lexeme, token, indent):
     global numRow
@@ -50,17 +50,20 @@ def parseToken(lexeme, token, indent):
         failParse('невідповідність лексем', (numLine, lex, tok, lexeme, token))
         return False
 
+
 def getSymb():
     if numRow > len_tableOfSymb:
         return False
     numLine, lexeme, token, _ = tableOfSymb[numRow]
     return numLine, lexeme, token
 
+
 def parseStatementList(specInstr=''):
     print('\t parseStatementList():')
     while parseStatement(specInstr):
         pass
     return True
+
 
 def parseStatement(specInstr=''):
     global numRow
@@ -106,12 +109,13 @@ def parseStatement(specInstr=''):
         failParse('невідповідність інструкцій', (numLine, lex, tok, ''))
         return False
 
+
 def parseAssign():
     global numRow
     if viewSyntax:
         print('\t' * 4 + 'parseAssign():')
     numLine, lex, tok = getSymb()
-    postfixCode.append((lex, tok))     # Трансляція
+    postfixCode.append((lex, tok))  # Трансляція
     # if viewTranslation:
     #     configToPrint(lex, numRow)
     numRow += 1
@@ -145,6 +149,7 @@ def parseIdentList():
     numLine, lex, tok = getSymb()
     failParse('невідповідність токенів', (numLine, lex, tok))
 
+
 def parseIdent():
     if viewSyntax:
         print('\t' * 6 + 'parseIdent():')
@@ -161,6 +166,7 @@ def parseIdent():
     else:
         return False
 
+
 def parseExpressionList():
     if viewSyntax:
         print('\t' * 5 + 'parseExpressionList():')
@@ -174,6 +180,7 @@ def parseExpressionList():
         parseToken(',', 'punct', '\t\t\t\t\t')
         postfixCode.append(('OUT', 'out'))
     return True
+
 
 def parseExpression():
     global numRow, postfixCode
@@ -193,14 +200,13 @@ def parseExpression():
             if viewSyntax:
                 print('\t' * 6 + '[{0}]: {1}'.format(numLine, (lex, tok)))
             parseTerm()
-
             postfixCode.append((lex, tok))  # трансляція
-
             # if viewTranslation:
             #     # configToPrint(lex, numRowCopy)
         else:
             F = False
     return True
+
 
 def parseTerm():
     global numRow, postfixCode
@@ -225,6 +231,7 @@ def parseTerm():
         else:
             F = False
     return True
+
 
 def parseFactor():
     global numRow, postfixCode
@@ -270,6 +277,7 @@ def parseFactor():
                   (numLine, lex, tok, 'integer, real, ident або \'(\' Expression \')\''))
     return True
 
+
 def parseRead():
     global numRow
     if viewSyntax:
@@ -283,6 +291,7 @@ def parseRead():
         return True
     else:
         return False
+
 
 def parsePrint():
     global numRow
@@ -298,6 +307,7 @@ def parsePrint():
     else:
         return False
 
+
 def parseIf():
     global numRow
     if viewSyntax:
@@ -311,7 +321,6 @@ def parseIf():
         parseToken('{', 'brackets_op', '\t' * 5)
         parseStatementList('IF')
         parseToken('}', 'brackets_op', '\t' * 5)
-
         return True
     else:
         return False
@@ -349,6 +358,7 @@ def parseFor():
     else:
         return False
 
+
 def parseBoolExpr():
     global numRow
     if viewSyntax:
@@ -368,11 +378,11 @@ def parseBoolExpr():
         failParse('невідповідність у BoolExpr', (numLine, lex, tok, '== != <= >= < >'))
     return True
 
+
 def failParse(str, tuple):
     if str == 'неочікуваний кінець програми':
         (lexeme, token, numRow) = tuple
-        print(
-            '\nParser ERROR: \n\tНеочікуваний кінець програми - в таблиці символів (розбору) немає запису з номером {1}.'
+        print('\nParser ERROR: \n\tНеочікуваний кінець програми - в таблиці символів (розбору) немає запису з номером {1}.'
             '\n\tОчікувалось - {0}'.format((lexeme, token), numRow))
         exit(106)
     elif str == 'невідповідність лексем':
@@ -382,27 +392,25 @@ def failParse(str, tuple):
         exit(107)
     elif str == 'невідповідність інструкцій':
         (numLine, lex, tok, expected) = tuple
-        print(
-            '\nParser ERROR: \n\t[{0}]: Неочікуваний елемент (\'{1}\', {2}).'
-            '\n\tОчікувалася інструкція.'.format(numLine, lex, tok, expected))
+        print('\nParser ERROR: \n\t[{0}]: Неочікуваний елемент (\'{1}\', {2}).'
+              '\n\tОчікувалася інструкція.'.format(numLine, lex, tok, expected))
         exit(108)
     elif str == 'невідповідність у Expression.Factor':
         (numLine, lex, tok, expected) = tuple
-        print(
-            '\nParser ERROR: \n\t[{0}]: Неочікуваний елемент (\'{1}\', {2}).'
-            '\n\tОчікувався - \'{3}\'.'.format(numLine, lex, tok, expected))
+        print('\nParser ERROR: \n\t[{0}]: Неочікуваний елемент (\'{1}\', {2}).\n\t'
+              'Очікувався - \'{3}\'.'.format(numLine, lex, tok, expected))
         exit(109)
     elif str == 'невідповідність у BoolExpr':
         (numLine, lex, tok, expected) = tuple
-        print(
-            '\nParser ERROR: \n\t[{0}]: Неочікуваний елемент (\'{1}\', {2}).'
-            '\n\tОчікувався оператор порівняння - \'{3}\'.'.format(numLine, lex, tok, expected))
+        print('\nParser ERROR: \n\t[{0}]: Неочікуваний елемент (\'{1}\', {2}).'
+              '\n\tОчікувався оператор порівняння - \'{3}\'.'.format(numLine, lex, tok, expected))
         exit(110)
     elif str == 'невідповідність токенів':
         (numLine, lex, tok) = tuple
         print('\nParser ERROR: \n\t[{0}]: Неочікуваний елемент (\'{1}\', {2}).'
               '\n\tОчікувався ідентифікатор'.format(numLine, lex, tok))
         exit(111)
+
 
 # def configToPrint(lex,numRow):
 #     stage = '\nКрок трансляції\n'
@@ -412,3 +420,8 @@ def failParse(str, tuple):
 #     print(stage.format(lex, numRow, str(tableOfSymb[numRow]), str(postfixCode)))
 
 parseProgram()
+
+
+
+
+

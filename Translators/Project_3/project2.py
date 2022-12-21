@@ -1,7 +1,7 @@
 from builtins import len, SystemExit, print, exit, KeyError
 from io import open
 
-f = open('code_examples/errors/error7.txt', 'r')
+f = open('code_examples/test.txt', 'r')
 # f = open('code_examples/normal.txt', 'r')
 sourceCode = f.read()
 f.close()

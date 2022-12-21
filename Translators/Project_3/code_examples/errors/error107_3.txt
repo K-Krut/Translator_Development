@@ -1,0 +1,6 @@
+start ProgramName
+    k = 1;
+    if (k != 10) {
+        print (k);
+
+end

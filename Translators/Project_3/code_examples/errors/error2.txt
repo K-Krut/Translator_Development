@@ -1,9 +1,0 @@
-start ProgramName
-    I = 1;
-
-    if (I < 10 ) {
-        print (k);
-    }
-
-end
-
